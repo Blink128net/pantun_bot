@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head><title>Pantun <%= nama %></title></head>
+<body>
+  <h2>Pantun Kategori: <%= nama.toUpperCase() %></h2>
+  <form method="POST" action="/kategori/<%= nama %>/tambah">
+    <textarea name="isi" rows="4" cols="50" placeholder="Isi pantun..."></textarea><br>
+    <button type="submit">Tambah</button>
+  </form>
+
+  <hr>
+  <% pantun.forEach((p, i) => { %>
+    <div style="margin-bottom: 10px;">
+      <pre><%= p %></pre>
+      <form method="POST" action="/kategori/<%= nama %>/hapus/<%= i %>" style="display:inline;">
+        <button type="submit">Hapus</button>
+      </form>
+    </div>
+  <% }) %>
+  <a href="/">⬅ Kembali</a>
+</body>
+</html>
