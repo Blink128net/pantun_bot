@@ -12,3 +12,5 @@ for (const file of commandFiles) {
   const command = require(`./commands/${file}`);
   command(bot);
 }
+const startCommand = require("./commands/start");
+startCommand(bot);

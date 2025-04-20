@@ -1,20 +1,43 @@
+// commands/start.js
+
+const { isUserJoined } = require("../utils/checkJoin");
+
 module.exports = (bot) => {
-    bot.onText(/^\/start$/, (msg) => {
-      const chatId = msg.chat.id;
-  
-      const keyboard = {
+  bot.onText(/\/start/, async (msg) => {
+    const chatId = msg.chat.id;
+    const userId = msg.from.id;
+
+    const joined = await isUserJoined(bot, userId);
+
+    if (!joined) {
+      bot.sendMessage(chatId, `🚫 Kamu belum join channel kami.
+      
+Silakan join dulu sebelum menggunakan bot ini.`, {
         reply_markup: {
-          keyboard: [
-            [{ text: '🎉 Pantun Lucu' }, { text: '💔 Pantun Galau' }],
-            [{ text: '💘 Pantun Cinta' }, { text: '😍 Pantun Gombal' }],
-            [{ text: '🧠 Pantun Bijak' }, { text: '📜 Pantun Random' }],
-          ],
-          resize_keyboard: true,
-          one_time_keyboard: false,
-        },
-      };
-  
-      bot.sendMessage(chatId, `Hai ${msg.from.first_name}! Pilih jenis pantun yang kamu mau di bawah ini:`, keyboard);
-    });
-  };
-  console.log("aktif")
+          inline_keyboard: [
+            [{ text: "📢 Join Channel", url: "https://t.me/namachannel_kamu" }],
+            [{ text: "✅ Sudah Join", callback_data: "check_join" }]
+          ]
+        }
+      });
+      return;
+    }
+
+    bot.sendMessage(chatId, "✅ Selamat datang! Kamu sudah join.");
+  });
+
+  bot.on("callback_query", async (query) => {
+    if (query.data === "check_join") {
+      const userId = query.from.id;
+      const chatId = query.message.chat.id;
+
+      const joined = await isUserJoined(bot, userId);
+
+      if (joined) {
+        bot.sendMessage(chatId, "✅ Terima kasih sudah join! Kamu bisa lanjut.");
+      } else {
+        bot.sendMessage(chatId, "❗ Kamu masih belum join. Coba lagi setelah join ya.");
+      }
+    }
+  });
+};

@@ -26,9 +26,9 @@ module.exports = (bot) => {
     const newPantun = match[2].trim();
     const allowedUserId = 123456789;
     try {
-        if (msg.from.id !== allowedUserId) {
-            return bot.sendMessage(chatId, '❌ Kamu tidak punya akses untuk menambahkan pantun.');
-          }
+        // if (msg.from.id !== allowedUserId) {
+        //     return bot.sendMessage(chatId, '❌ Kamu tidak punya akses untuk menambahkan pantun.');
+        //   }
       if (!allowedCategories.includes(category)) {
         return bot.sendMessage(chatId, `Kategori tidak dikenal. Kategori yang tersedia: ${allowedCategories.join(', ')}`);
       }
