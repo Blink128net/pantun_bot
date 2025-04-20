@@ -1,21 +1,19 @@
 // commands/start.js
 
-const { isUserJoined } = require("../utils/checkJoin");
+const checkJoin = require("../utils/checkJoin");
 
 module.exports = (bot) => {
   bot.onText(/\/start/, async (msg) => {
     const chatId = msg.chat.id;
     const userId = msg.from.id;
 
-    const joined = await isUserJoined(bot, userId);
+    const joined = await checkJoin(bot, userId);
 
     if (!joined) {
-      bot.sendMessage(chatId, `🚫 Kamu belum join channel kami.
-      
-Silakan join dulu sebelum menggunakan bot ini.`, {
+      bot.sendMessage(chatId, `🚫 Kamu belum join channel kami. Silakan join dulu sebelum menggunakan bot ini.`, {
         reply_markup: {
           inline_keyboard: [
-            [{ text: "📢 Join Channel", url: "https://t.me/namachannel_kamu" }],
+            [{ text: "📢 Join Channel", url: "https://t.me/indonesia_bots" }],
             [{ text: "✅ Sudah Join", callback_data: "check_join" }]
           ]
         }
@@ -31,7 +29,7 @@ Silakan join dulu sebelum menggunakan bot ini.`, {
       const userId = query.from.id;
       const chatId = query.message.chat.id;
 
-      const joined = await isUserJoined(bot, userId);
+      const joined = await checkJoin(bot, userId);
 
       if (joined) {
         bot.sendMessage(chatId, "✅ Terima kasih sudah join! Kamu bisa lanjut.");
