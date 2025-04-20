@@ -1,20 +1,13 @@
 // utils/checkJoin.js
 
-const TelegramBot = require('node-telegram-bot-api');
+const channelUsername = '@indonesia_bots'; // ganti sesuai channel kamu
 
-// Username channel publik (pakai @)
-const CHANNEL_USERNAME = "@indonesia_bots"; // Ganti sesuai channel kamu
-
-// Fungsi cek apakah user sudah join channel
-async function isUserJoined(bot, userId) {
+module.exports = async function checkJoin(bot, userId) {
   try {
-    const res = await bot.getChatMember(CHANNEL_USERNAME, userId);
-    const status = res.status;
-    return status === 'member' || status === 'administrator' || status === 'creator';
-  } catch (error) {
-    console.error("❌ Error cek join:", error.message);
+    const res = await bot.getChatMember(channelUsername, userId);
+    return ['member', 'administrator', 'creator'].includes(res.status);
+  } catch (err) {
+    console.error('❗ Gagal cek member:', err.message);
     return false;
   }
-}
-
-module.exports = { isUserJoined };
+};
